@@ -15,3 +15,7 @@ def ft_garden_data():
     print(f"{rose.name}: {rose.height}cm, {rose.age} days old")
     print(f"{sunflower.name}: {sunflower.height}cm, {sunflower.age} days old")
     print(f"{cactus.name}: {cactus.height}cm, {cactus.age} days old")
+
+
+if __name__ == "__main__":
+    ft_garden_data()

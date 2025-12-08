@@ -23,4 +23,9 @@ def ft_plant_factory():
         new_plant = Plant(*data_plant)
         new_plant.display_info()
         i += 1
+    print()
     print(f"Total plants created: {i}")
+
+
+if __name__ == "__main__":
+    ft_plant_factory()

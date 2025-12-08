@@ -70,7 +70,7 @@ class GardenManager:
         count = 0
         for plant in self.plants:
             count += 1
-            output = f"{plant.name}: {plant.height}cm"
+            output = f"- {plant.name}: {plant.height}cm"
 
             if isinstance(plant, FloweringPlant):
                 output += f", {plant.color} flowers (blooming)"
@@ -78,7 +78,7 @@ class GardenManager:
             if isinstance(plant, PrizeFlower):
                 output += f", Prize points: {plant.prize_points}"
             print(output)
-
+        print()
         print(f"Plants added: {count}, "
               f"Total growth: {self.total_growth_tracked}cm")
 
@@ -107,18 +107,15 @@ if __name__ == "__main__":
     alice_garden.add_plant(Plant("Oak Tree", 100, 365))
     alice_garden.add_plant(FloweringPlant("Rose", 25, 30, "red"))
     alice_garden.add_plant(PrizeFlower("Sunflower", 50, 45, "yellow", 10))
-    print()
-    alice_garden.grow_all_plants(1)
-    print()
-
-    alice_garden.get_report()
-    print()
-
-    print(f"Height validation test: {GardenManager.validate_height(101)}")
     bob_garden = GardenManager("Bob")
     bob_p1 = Plant("Oak Tree", 92, 10)
     bob_garden.add_plant(bob_p1)
-
+    print()
+    alice_garden.grow_all_plants(1)
+    print()
+    alice_garden.get_report()
+    print()
+    print(f"Height validation test: {GardenManager.validate_height(101)}")
     alice_score = alice_garden.stats.calculate_score(alice_garden.plants)
     bob_score = bob_garden.stats.calculate_score(bob_garden.plants)
 

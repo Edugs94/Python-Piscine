@@ -31,3 +31,7 @@ def ft_plant_growth(plant, growth_rate):
     growth = plant.grow(days_to_simulate, growth_rate)
     plant.age_increase(days_to_simulate)
     plant.get_info(6, growth)
+
+
+if __name__ == "__main__":
+    ft_plant_growth(rose, 1)

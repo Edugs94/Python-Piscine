@@ -15,6 +15,7 @@ class SecurePlant:
     @get_height.setter
     def set_height(self, new_height):
         if (new_height < 0):
+            print()
             print(
                 f"Invalid operation attempted: height {new_height}cm"
                 " [REJECTED]"
@@ -27,6 +28,7 @@ class SecurePlant:
     @get_age.setter
     def set_age(self, new_age):
         if (new_age < 0):
+            print()
             print(
                 f"Invalid operation attempted: age {new_age} days"
                 " [REJECTED]"
@@ -49,5 +51,10 @@ def ft_garden_security():
     my_rose.set_height = 25
     my_rose.set_age = 30
     my_rose.set_height = -5
+    print()
     print(f"Current plant: {my_rose.name} ({my_rose.get_height}"
           f"cm, {my_rose.get_age} days)")
+
+
+if __name__ == "__main__":
+    ft_garden_security()
