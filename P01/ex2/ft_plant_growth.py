@@ -10,7 +10,7 @@ class Plant:
         return growth_amount
 
     def age_increase(self, days):
-        self.age += days + 1
+        self.age += days
 
     def get_info(self, days, growth_amount):
 
