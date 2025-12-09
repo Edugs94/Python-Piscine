@@ -1,4 +1,5 @@
 def garden_operations(error):
+    """Simulates specific Python errors based on the input error type."""
 
     if (error == "ValueError"):
 
@@ -17,6 +18,8 @@ def garden_operations(error):
 
 
 def test_error_types():
+    """Tests the generation and safe handling of multiple error types."""
+
     print('=== Garden Error Types Demo ===')
     print()
 
@@ -26,7 +29,6 @@ def test_error_types():
     except ValueError:
         print("Caught ValueError: invalid literal for int()")
     print()
-
     print('Testing temperature: ZeroDivisionError...')
     try:
         garden_operations("ZeroDivisionError")
@@ -47,5 +49,14 @@ def test_error_types():
     except KeyError:
         print("Caught KeyError: 'missing\\_plant'")
     print()
+    print('Testing multiple errors together..')
+    try:
+        garden_operations("ValueError")
+    except (ValueError, ZeroDivisionError, FileNotFoundError, KeyError):
+        print("Caught an error, but program continues!")
+    print()
+    print("All error types tested successfully!")
 
-    print("All tests completed - program didn't crash!")
+
+if __name__ == "__main__":
+    test_error_types()

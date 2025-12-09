@@ -1,38 +1,49 @@
 class GardenError(Exception):
+    """Base exception class for all garden-related errors."""
     pass
 
 
 class EmptyName(GardenError):
+    """Exception raised when a plant name is missing"""
     pass
 
 
 class HealthError(GardenError):
+    """Exception raised for invalid plant health metrics."""
     pass
 
 
 class WaterError(GardenError):
+    """Exception raised for water tank issues."""
     pass
 
 
 class GardenManager:
+    """Manages garden operations including planting,
+    watering, and monitoring."""
 
-    valid_plants = []
+    def __init__(self):
+        self.valid_plants = []
 
-    def add_plants(plant):
+    def add_plants(self, plant):
+        """Adds a plant to the manager or raises error if the plant is None."""
+
         if plant is None:
             raise EmptyName("Error adding plant: Plant name cannot be empty!")
-        GardenManager.valid_plants.append(plant)
+        self.valid_plants.append(plant)
         print(f'Added {plant[0]} successfully')
 
-    def water_plants(valid_plants):
-        for plant in GardenManager.valid_plants:
-            try:
-                print(f'Watering {plant[0]} - success')
-            except EmptyName as e:
-                print(e)
+    def water_plants(self):
+        """Iterates through valid plants to simulate watering."""
+
+        print('Opening watering system')
+        for plant in self.valid_plants:
+            print(f'Watering {plant[0]} - success')
         print('Closing watering system (cleanup)')
 
-    def check_health(plant_name, water_level, sunlight_hours):
+    def check_health(self, plant_name, water_level, sunlight_hours):
+        """Validates water and sunlight levels,
+        raising errors if out of range."""
 
         if not plant_name:
             raise HealthError("Error: Plant name cannot be empty!")
@@ -53,37 +64,41 @@ class GardenManager:
         print(f"{plant_name}: healthy (water: {water_level},"
               f" sun: {sunlight_hours})")
 
-    def check_tank(tank_status):
+    def check_tank(self, tank_status):
+        """Checks the water tank status and raises an error if empty."""
+
         if tank_status == "empty":
             raise WaterError("Caught GardenError: "
                              "Not enough water in the tank")
 
-    def get_report(plant_list, tank_status):
+    def get_report(self, plant_list, tank_status):
+        """Executes the full garden simulation workflow."""
+
         print('=== Garden Management System ===')
         print()
         print('Adding plants to garden...')
         for plant in plant_list:
             try:
-                GardenManager.add_plants(plant)
+                self.add_plants(plant)
             except EmptyName as e:
                 print(e)
         print()
+
         print('Watering plants...')
-        print('Opening watering system')
-        GardenManager.water_plants(GardenManager.valid_plants)
+        self.water_plants()
         print()
 
         print('Checking plant health...')
         try:
-            for plant in GardenManager.valid_plants:
-                GardenManager.check_health(plant[0], plant[1], plant[2])
+            for plant in self.valid_plants:
+                self.check_health(*plant)
         except HealthError as e:
             print(e)
         print()
 
         print('Testing error recovery...')
         try:
-            GardenManager.check_tank(tank_status)
+            self.check_tank(tank_status)
         except GardenError as e:
             print(e)
         finally:
@@ -93,4 +108,7 @@ class GardenManager:
         print('Garden management system test complete!')
 
 
-GardenManager.get_report([('tomato', 5, 8), ('lettuce', 15, 8), None], 'empty')
+if __name__ == "__main__":
+    manager = GardenManager()
+    manager.get_report([('tomato', 5, 8),
+                        ('lettuce', 15, 8), None], 'empty')

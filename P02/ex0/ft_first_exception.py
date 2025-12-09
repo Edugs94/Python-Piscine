@@ -1,16 +1,18 @@
 def check_temperature(temp_str):
+    """Validates if the temperature is a number
+    within the safe range (0-40)."""
 
     try:
         temp = int(temp_str)
 
-    except Exception:
+    except: # noqa
         print(f"Error: '{temp_str}' is not a valid number")
         return None
 
-    if (temp > 40):
+    if temp > 40:
         print(f"Error: {temp_str}°C is too hot for plants (max 40°C)")
 
-    elif (temp < 0):
+    elif temp < 0:
         print(f"Error: {temp_str}°C is too cold for plants (min 0°C)")
 
     else:
@@ -20,6 +22,9 @@ def check_temperature(temp_str):
 
 
 def test_temperature_input():
+    """Tests the temperature checker with
+    valid, invalid, and boundary values."""
+
     print('=== Garden Temperature Checker ===')
     print()
     print('Testing temperature: 25')
@@ -35,3 +40,7 @@ def test_temperature_input():
     check_temperature(-50)
     print()
     print("All tests completed - program didn't crash!")
+
+
+if __name__ == "__main__":
+    test_temperature_input()
