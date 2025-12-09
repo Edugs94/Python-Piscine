@@ -1,7 +1,10 @@
+"""Exercise 1: Score Analytics."""
+
 import sys
 
 
 def create_list(score_list) -> list:
+    """Creates a list 2nd command-line argument to the last one."""
 
     for arg in sys.argv[1:]:
         try:
@@ -13,6 +16,8 @@ def create_list(score_list) -> list:
 
 
 def main():
+    "Main workflow to print requested data from list data"
+
     argc = len(sys.argv)
     print("=== Player Score Analytics ===")
     if argc < 2:
