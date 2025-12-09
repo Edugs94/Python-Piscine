@@ -1,5 +1,4 @@
 """Exercise 1: Score Analytics."""
-
 import sys
 
 

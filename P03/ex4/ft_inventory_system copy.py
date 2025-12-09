@@ -1,7 +1,7 @@
 def create_inventories() -> dict:
 
     inventories = {
-     'players':
+    'players':
      {'alice':
       {'items':
        {'pixel_sword': 1, 'code_bow': 1, 'health_byte': 1, 'quantum_ring': 3},
@@ -36,15 +36,12 @@ def create_inventories() -> dict:
 
 
 def display_inventory(inventories: dict, player: str) -> None:
-    items = inventories.get('players').get(player).get('items')
-    print(items)
-    if items is None:
+    inventory = inventories.get(player)
+    if inventory is None:
         print(f"{player} not found")
         return
-    gold_value = inventories.get('players').get(player).get('total_value')
-    item_count = inventories.get('players').get(player).get('item_count')
-
-
+    gold_value = 0
+    item_count = 0
     category_counts = {}
     print(f"=== {player}'s Inventory ===")
     for name, details in inventory.items():
@@ -67,7 +64,8 @@ def display_inventory(inventories: dict, player: str) -> None:
     print('Categories: ', end='')
     text = [f"{category}({quantity})" for category, quantity
             in category_counts.items()]
-    print(*text, sep=', ') '''
+    print(*text, sep=', ')
+
 
 def display_update(inventories: dict, player1, player2, item_name):
     print('=== Updated Inventories ===')
@@ -160,7 +158,40 @@ if __name__ == "__main__":
     print('=== Player Inventory System ==')
     print()
     inventories = create_inventories()
-    display_inventory(inventories, 'alice')
-    #print()
-    #inventories = ft_transaction(inventories, player1, player2, 'potion', 2)
-    #print_analytics(inventories)
+    display_inventory(inventories, player1)
+    print()
+    inventories = ft_transaction(inventories, player1, player2, 'potion', 2)
+    print_analytics(inventories)
+
+   '''
+    inventories = {
+        'Alice': {
+            'sword': {
+                'category': 'weapon',
+                'rarity': 'rare',
+                'qty': 1,
+                'price': 500
+            },
+            'potion': {
+                'category': 'consumable',
+                'rarity': 'common',
+                'qty': 5,
+                'price': 50
+            },
+
+            'shield': {
+                'category': 'armor',
+                'rarity': 'uncommon',
+                'qty': 1,
+                'price': 200
+            }
+        },
+        'Bob': {
+            'magic ring': {
+                'category': 'armor',
+                'rarity': 'rare',
+                'qty': 1,
+                'price': 300
+            }
+        }
+    }'''

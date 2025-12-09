@@ -2,6 +2,7 @@ import math
 
 
 def distance_caculator(x2: int, y2: int, z2: int) -> float:
+    '''Calculate distance between origin point(0,0,0) and point received'''
     x1 = 0
     y1 = 0
     z1 = 0
@@ -10,10 +11,12 @@ def distance_caculator(x2: int, y2: int, z2: int) -> float:
 
 
 def detail_error(error: str, error_message):
+    '''Print error message'''
     print(f"Error details - Type: {error}, Args: (\"{error_message}\",)")
 
 
 def parse_coordinates(data) -> tuple:
+    '''Checks if coordinates are valid (3 integers) and parse if needed'''
     i = 0
     flag = 0
 
@@ -50,6 +53,7 @@ def parse_coordinates(data) -> tuple:
 
 
 def main() -> None:
+    '''Main workflow of the program'''
 
     print('=== Game Coordinate System ===')
     test_1 = (10, 20, 5)
