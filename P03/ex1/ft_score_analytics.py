@@ -9,7 +9,7 @@ def create_list() -> list:
         try:
             score_list.append(int(arg))
         except ValueError:
-            print('Error')
+            print('Arguments can only contain numeric values')
             return None
 
     return score_list
