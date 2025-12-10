@@ -1,5 +1,5 @@
 def get_next_prime():
-
+    '''Yield next existing prime number'''
     num = 2
     while (True):
         i = 2
@@ -15,7 +15,7 @@ def get_next_prime():
 
 
 def get_next_fib():
-
+    '''Yield next existing fibonacci number'''
     first = 0
     second = 1
     yield first
@@ -27,9 +27,8 @@ def get_next_fib():
 
 
 def print_numbers(times: int, generator: str) -> None:
-
+    '''Print prime or fibonacci number yielded by generators'''
     if generator == 'prime':
-        i = 0
         print(f'Prime numbers (first {times}): ', end='')
         prime_generator = get_next_prime()
         for i in range(times):
@@ -40,7 +39,6 @@ def print_numbers(times: int, generator: str) -> None:
                 print(f'{next_prime}')
 
     if generator == 'fibonacci':
-        i = 0
         print(f'Fibonacci sequence (first {times}): ', end='')
         fib_generator = get_next_fib()
         for i in range(times):
@@ -51,38 +49,59 @@ def print_numbers(times: int, generator: str) -> None:
                 print(f'{next_fib}')
 
 
-def generate_events(players: list, actions: list, times: int):
-
-    i = 0
-    lvl10plus = 0
-    treasure_events = 0
-    level_up_events = 0
-    print('=== Game Data Stream Processor ===')
-    print()
-    print(f"Processing {times} game events...")
-    print()
+def game_event_generator(players: list, actions: list, times: int):
+    '''
+    Generator function that yields game event dictionaries
+    simulating a data stream.
+    '''
     for i in range(times):
-
         player = players[i % len(players)]
         level = (i * 3 + 5) % 17
         action = actions[((i + level) % len(actions))]
 
-        print(f'Event {i + 1}: Player {player}', end='')
-        print(f' (level {level})', end='')
-        print(f' {action}')
+        event = {
+            'id': i + 1,
+            'player': player,
+            'event_type': action,
+            'data': {
+                'level': level
+            }
+        }
+        yield event
 
-        if level >= 10:
+
+def process_game_events(stream_generator, total_events: int):
+    '''
+    Consumes the generator stream, prints events and calculates stats.
+    '''
+    lvl10plus = 0
+    treasure_events = 0
+    level_up_events = 0
+
+    print('=== Game Data Stream Processor ===')
+    print()
+    print(f"Processing {total_events} game events...")
+    print()
+
+    for event in stream_generator:
+        print(f'Event {event['id']}: Player {event['player']} '
+              f'(level {event['data']['level']}) {event['event_type']}')
+
+        if event['data']['level'] >= 10:
             lvl10plus += 1
-        if action == "found treasure":
+        if event['event_type'] == "found treasure":
             treasure_events += 1
-        if action == "leveled up":
+        if event['event_type'] == "leveled up":
             level_up_events += 1
 
     print()
-    stream_analytics(times, lvl10plus, treasure_events, level_up_events)
+    stream_analytics(total_events, lvl10plus, treasure_events, level_up_events)
 
 
 def stream_analytics(times, lvl10plus, treasure_events, level_up_events):
+    '''
+    Displays analysis requested on screen
+    '''
     print('=== Stream Analytics ===')
     print()
     print(f'Total events processed: {times}')
@@ -92,6 +111,7 @@ def stream_analytics(times, lvl10plus, treasure_events, level_up_events):
 
 
 def generator_demonstration():
+    '''Runs demonstration for fibonacci and prime generators'''
     print()
     print('=== Generator Demonstration ===')
     print_numbers(10, 'fibonacci')
@@ -99,18 +119,24 @@ def generator_demonstration():
 
 
 def show_mem_use():
+    '''Hard coded function to fit example output as import
+    time is not allowed'''
     secs = 0.045
     print()
     print('Memory usage: Constant (streaming)')
     print(f'Processing time: {secs} seconds')
-    '#hard coded to fit example output as import time is not allowed'
 
 
 if __name__ == "__main__":
+    '''Main program workflow'''
 
     players = ["alice", "bob", "charlie"]
     actions = ["killed monster", "found treasure", "leveled up"]
+    total_count = 1000
 
-    generate_events(players, actions, 1000)
+    my_stream = game_event_generator(players, actions, total_count)
+
+    process_game_events(my_stream, total_count)
+
     show_mem_use()
     generator_demonstration()
