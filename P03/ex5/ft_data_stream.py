@@ -1,3 +1,6 @@
+"""Exercise 5: Data Stream"""
+
+
 def get_next_prime():
     '''Yield next existing prime number'''
     num = 2

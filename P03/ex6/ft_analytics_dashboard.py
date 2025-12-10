@@ -1,3 +1,6 @@
+"""Exercise 6: Analytics Dashboard"""
+
+
 def create_data() -> dict:
     """
     Data extracted from example given on data_generator

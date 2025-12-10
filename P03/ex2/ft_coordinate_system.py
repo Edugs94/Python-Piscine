@@ -1,3 +1,6 @@
+"""Exercise 2: Coordinate System."""
+
+
 import math
 
 

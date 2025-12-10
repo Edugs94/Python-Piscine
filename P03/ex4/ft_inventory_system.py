@@ -1,3 +1,6 @@
+"""Exercise 4: Inventory System"""
+
+
 def create_inventories() -> dict:
     '''Creates a general data_base named inventories based on
     data_generator given on the exercise'''

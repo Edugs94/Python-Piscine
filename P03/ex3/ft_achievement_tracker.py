@@ -1,3 +1,6 @@
+"""Exercise 3: Achievement tracker."""
+
+
 def format_output(data):
     '''Helper to print "None" if set is empty, otherwise print the set'''
     if not data:

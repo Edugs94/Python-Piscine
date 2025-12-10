@@ -3,7 +3,7 @@ import sys
 
 
 def create_list() -> list:
-    """Creates a list 2nd command-line argument to the last one."""
+    """Creates a list and checks if all args are valid"""
     score_list = []
     for arg in sys.argv[1:]:
         try:
