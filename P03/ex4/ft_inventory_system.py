@@ -1,166 +1,217 @@
 def create_inventories() -> dict:
-
     inventories = {
-     'players':
-     {'alice':
-      {'items':
-       {'pixel_sword': 1, 'code_bow': 1, 'health_byte': 1, 'quantum_ring': 3},
-       'total_value': 1875, 'item_count': 6},
-      'bob':
-      {'items':
-       {'code_bow': 3, 'pixel_sword': 2},
-       'total_value': 900, 'item_count': 5},
-      'charlie':
-      {'items':
-       {'pixel_sword': 1, 'code_bow': 1},
-       'total_value': 350, 'item_count': 2},
-      'diana':
-      {'items':
-       {'code_bow': 3, 'pixel_sword': 3, 'health_byte': 3, 'data_crystal': 3},
-       'total_value': 4125, 'item_count': 12}},
-     'catalog':
-     {'pixel_sword':
-      {'type': 'weapon', 'value': 150, 'rarity': 'common'},
-      'quantum_ring':
-      {'type': 'accessory', 'value': 500, 'rarity': 'rare'},
-      'health_byte':
-      {'type': 'consumable', 'value': 25, 'rarity': 'common'},
-      'data_crystal':
-      {'type': 'material', 'value': 1000, 'rarity': 'legendary'},
-      'code_bow':
-      {'type': 'weapon', 'value': 200, 'rarity': 'uncommon'}
-      }
-     }
-
+        'players': {
+            'alice': {
+                'items': {
+                    'pixel_sword': 1,
+                    'code_bow': 1,
+                    'health_byte': 1,
+                    'quantum_ring': 3
+                },
+                'total_value': 1875,
+                'item_count': 6
+            },
+            'bob': {
+                'items': {
+                    'code_bow': 3,
+                    'pixel_sword': 2
+                },
+                'total_value': 900,
+                'item_count': 5
+            },
+            'charlie': {
+                'items': {
+                    'pixel_sword': 1,
+                    'code_bow': 1
+                },
+                'total_value': 350,
+                'item_count': 2
+            },
+            'diana': {
+                'items': {
+                    'code_bow': 3,
+                    'pixel_sword': 3,
+                    'health_byte': 3,
+                    'data_crystal': 3
+                },
+                'total_value': 4125,
+                'item_count': 12
+            }
+        },
+        'catalog': {
+            'pixel_sword':
+                {'type': 'weapon', 'value': 150, 'rarity': 'common'},
+            'quantum_ring':
+                {'type': 'accessory', 'value': 500, 'rarity': 'rare'},
+            'health_byte': {'type': 'consumable', 'value': 25, 'rarity': 'common'},
+            'data_crystal': {'type': 'material', 'value': 1000, 'rarity': 'legendary'},
+            'code_bow': {'type': 'weapon', 'value': 200, 'rarity': 'uncommon'}
+        }
+    }
     return inventories
 
 
 def display_inventory(inventories: dict, player: str) -> None:
-    items = inventories.get('players').get(player).get('items')
-    print(items)
-    if items is None:
+    players_db = inventories.get('players')
+    catalog_db = inventories.get('catalog')
+    player_data = players_db.get(player)
+    if player_data is None:
         print(f"{player} not found")
         return
-    gold_value = inventories.get('players').get(player).get('total_value')
-    item_count = inventories.get('players').get(player).get('item_count')
-
-
-    category_counts = {}
     print(f"=== {player}'s Inventory ===")
-    for name, details in inventory.items():
-        qty = details.get('qty')
-        category = details.get('category')
-        rarity = details.get('rarity')
-        price = details.get('price')
+    gold_value = 0
+    item_count = 0
+    category_counts = {}
+
+    player_items = player_data.get('items')
+
+    for item_name, qty in player_items.items():
+        item_details = catalog_db.get(item_name)
+
+        price = item_details.get('value')
+        category = item_details.get('type')
+        rarity = item_details.get('rarity')
 
         total_price = qty * price
+
         gold_value += total_price
         item_count += qty
-        category_total = category_counts.get(category, 0)
-        category_counts.update({category: category_total + qty})
 
-        print(f"{name} ({category}, {rarity}):"
-              f" {qty}x @ {price} gold each = {total_price} gold")
+        current_cat_count = category_counts.get(category, 0)
+        category_counts.update({category: current_cat_count + qty})
+
+        print(f"{item_name} ({category}, {rarity}): "
+              f"{qty}x @ {price} gold each = {total_price} gold")
+
     print()
-    print(f'Inventory value: {gold_value}')
+    print(f'Inventory value: {gold_value} gold')
     print(f'Item count: {item_count} items')
+
     print('Categories: ', end='')
-    text = [f"{category}({quantity})" for category, quantity
-            in category_counts.items()]
-    print(*text, sep=', ') '''
+    i = 0
+    for cat, qty in category_counts.items():
+        if (i != len(category_counts) - 1):
+            print(f'{cat} ({qty}), ', end='')
+        else:
+            print(f'{cat} ({qty})')
 
-def display_update(inventories: dict, player1, player2, item_name):
-    print('=== Updated Inventories ===')
-    print(f'{player1} {item_name}s: {inventories.get(
-        player1).get(item_name).get('qty')}')
-    print(f'{player2} {item_name}s: {inventories.get(
-        player2).get(item_name).get('qty')}')
-    print()
+        i += 1
 
 
-def ft_transaction(inventories: dict, player1: str,
-                   player2: str, item_name: str, qty: int):
+def ft_transaction(inventories: dict, player1: str, player2: str, 
+                   item_name: str, qty: int):
 
     print(f"=== Transaction: {player1} gives {player2} {qty} {item_name}s ===")
-    if inventories.get(player1) is None:
+
+    players_db = inventories.get('players')
+    p1_data = players_db.get(player1.lower())
+    p2_data = players_db.get(player2.lower())
+
+    if p1_data is None:
         print(f"Error: Player {player1} does not exist. Aborting transaction")
-        return
-    if inventories.get(player2) is None:
+        return inventories
+    if p2_data is None:
         print(f"Error: Player {player2} does not exist. Aborting transaction")
-        return
+        return inventories
 
-    inventory_p1: dict = inventories.get(player1)
-    item_details_p1: dict = inventory_p1.get(item_name)
-    current_qty = item_details_p1.get('qty', 0)
-    item_details_p1.update({'qty': (current_qty - qty)})
+    p1_items = p1_data.get('items')
+    if p1_items.get(item_name) is None or p1_items.get(item_name) < qty:
+        print(f"Error: {player1} does not have enough {item_name}s. Aborting.")
+        return inventories
 
-    inventory_p2: dict = inventories.get(player2)
-    item_details_p2: dict = inventory_p2.get(item_name)
-    if item_details_p2 is None:
-        item_details_p2 = dict(item_details_p1)
-        inventory_p2.update({item_name: item_details_p2})
-        item_details_p2.update({'qty': 0})
-    current_qty = item_details_p2.get('qty', 0)
-    item_details_p2.update({'qty': current_qty + qty})
+    current_qty_p1 = p1_items.get(item_name)
+    p1_items.update({item_name: current_qty_p1 - qty})
+
+    p2_items = p2_data.get('items')
+    current_qty_p2 = p2_items.get(item_name, 0)
+    p2_items.update({item_name: current_qty_p2 + qty})
+
     print('Transaction successful!')
     print()
 
-    display_update(inventories, player1, player2, item_name)
+    print('=== Updated Inventories ===')
+    print(f'{player1} {item_name}s: {p1_items.get(item_name)}')
+    print(f'{player2} {item_name}s: {p2_items.get(item_name)}')
+    print()
 
     return inventories
 
 
 def print_analytics(inventories: dict):
     print('=== Inventory Analytics ===')
-    richest_player: str = None
-    highest_value: int = -1
+    
+    players_db = inventories.get('players')
+    catalog_db = inventories.get('catalog')
+
+    richest_player = None
+    highest_value = -1
+    
     most_items_player = None
     most_items_amount = -1
-    rarity_tier = {'common': 0, 'uncommon': 1, 'rare': 2, 'epic': 3,
-                   'legendary': 4}
-    unique_items = {}
-    rarest_items = {}
-    for player, item in inventories.items():
-        item_total = 0
-        item_qty = 0
-        for item_name, details in item.items():
-            item_total += details.get('qty') * details.get('price')
-            item_qty += details.get('qty')
-        if item_total > highest_value:
-            highest_value = item_total
-            richest_player = player
-        if item_qty > most_items_amount:
-            most_items_amount = item_qty
-            most_items_player = player
+
+
+    rarity_tier = {'common': 0, 'uncommon': 1, 'rare': 2, 'epic': 3, 'legendary': 4}
+    
+
+    max_rarity_found_value = -1
+    rarest_items_list = []
+
+    for player_name, player_data in players_db.items():
+        p_items = player_data.get('items')
+    
+        current_p_value = 0
+        current_p_qty = 0
+        
+        for item_name, qty in p_items.items():
+            if qty > 0:
+                item_details = catalog_db.get(item_name)
+                current_p_value += (item_details.get('value') * qty)
+                current_p_qty += qty
+                
+               
+                r_str = item_details.get('rarity')
+                r_val = rarity_tier.get(r_str, 0)
+                
+                if r_val > max_rarity_found_value:
+                    max_rarity_found_value = r_val
+                    rarest_items_list = [item_name] 
+            
+                elif r_val == max_rarity_found_value:
+                    found = False
+                    for existing in rarest_items_list:
+                        if existing == item_name:
+                            found = True
+                    if not found:
+                        rarest_items_list.append(item_name)
+
+        if current_p_value > highest_value:
+            highest_value = current_p_value
+            richest_player = player_name
+            
+        if current_p_qty > most_items_amount:
+            most_items_amount = current_p_qty
+            most_items_player = player_name
+
     print(f'Most valuable player: {richest_player} ({highest_value} gold)')
     print(f'Most items: {most_items_player} ({most_items_amount} items)')
 
-    max_rarity = -1
-    for player, item in inventories.items():
-        for item_name, details in item.items():
-            rarity_value = rarity_tier[details['rarity']]
-            unique_items.update({item_name: rarity_value})
-            if rarity_value > max_rarity:
-                max_rarity = rarity_value
-    for item_name, rarity in unique_items.items():
-        if unique_items.get(item_name) == max_rarity:
-            rarest_items.update({item_name: rarity})
-
     print('Rarest items: ', end='')
-
-    text = [f"{item_name}" for item_name, rarity
-            in rarest_items.items()]
-    print(*text, sep=', ')
+    for i in range(len(rarest_items_list)):
+        if i == len(rarest_items_list) - 1:
+            print(rarest_items_list[i])
+        else:
+            print(rarest_items_list[i], end=', ')
 
 
 if __name__ == "__main__":
-    player1 = 'Alice'
-    player2 = 'Bob'
+    player1 = 'alice'
+    player2 = 'bob'
 
-    print('=== Player Inventory System ==')
-    print()
+    print('=== Player Inventory System ===')
     inventories = create_inventories()
-    display_inventory(inventories, 'alice')
-    #print()
-    #inventories = ft_transaction(inventories, player1, player2, 'potion', 2)
-    #print_analytics(inventories)
+    
+    display_inventory(inventories, player1)
+   
+    inventories = ft_transaction(inventories, player1, player2, 'pixel_sword', 1)
+   
+    print_analytics(inventories)
