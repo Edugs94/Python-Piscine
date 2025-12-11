@@ -87,8 +87,8 @@ def process_game_events(stream_generator, total_events: int):
     print()
 
     for event in stream_generator:
-        print(f'Event {event['id']}: Player {event['player']} '
-              f'(level {event['data']['level']}) {event['event_type']}')
+        print(f"Event {event['id']}: Player {event['player']} "
+              f"(level {event['data']['level']}) {event['event_type']}")
 
         if event['data']['level'] >= 10:
             lvl10plus += 1
