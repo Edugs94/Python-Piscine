@@ -71,7 +71,7 @@ class GardenManager:
             raise WaterError("Caught GardenError: "
                              "Not enough water in the tank")
 
-    def get_report(self, plant_list, tank_status):
+    def test_garden_management(self, plant_list, tank_status):
         """Executes the full garden simulation workflow."""
 
         print('=== Garden Management System ===')
@@ -110,5 +110,5 @@ class GardenManager:
 
 if __name__ == "__main__":
     manager = GardenManager()
-    manager.get_report([('tomato', 5, 8),
+    manager.test_garden_management([('tomato', 5, 8),
                         ('lettuce', 15, 8), None], 'empty')
