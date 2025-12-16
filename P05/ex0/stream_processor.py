@@ -11,7 +11,7 @@ def ft_len(data: Any) -> int:
     """
     Recreation of len() as do not appear as an allowed function
     """
-    counter = 0
+    counter: int = 0
     for _ in data:
         counter += 1
     return counter
@@ -21,7 +21,7 @@ def ft_sum(data: List[int]) -> int:
     """
     Recreation of sum() as do not appear as an allowed function
     """
-    total = 0
+    total: int = 0
     for number in data:
         total += number
     return total
@@ -31,8 +31,8 @@ def ft_word_count(text: str) -> int:
     """
     Words counter in a string
     """
-    count = 0
-    in_word = False
+    count: int = 0
+    in_word: bool = False
 
     for char in text:
         if char != " ":
@@ -46,38 +46,48 @@ def ft_word_count(text: str) -> int:
 
 
 def validate_data(data: Any, datatype: Any) -> None:
+    """Check if Data is Valid"""
     if not isinstance(data, datatype):
         raise ValueError("Incorrect data type")
 
 
 class DataProcessor(ABC):
+    """Parent class for processors"""
     def __init__(self) -> None:
+        """Ini"""
         pass
 
     @abstractmethod
     def validate(self, data: Any) -> bool:
+        """Validate input data"""
         pass
 
     @abstractmethod
     def process(self, data: Any) -> str:
+        """Process input data"""
         pass
 
     def format_output(self, result: str) -> str:
+        """Format the result string"""
         return f"Output: {result}"
 
 
 class NumericProcessor(DataProcessor):
+    """Processes lists of numbers"""
     def __init__(self) -> None:
+        """Initialize processor"""
         super().__init__()
 
     def process(self, data: List[int]) -> str:
-        result = (
+        """Calculate sum and average"""
+        result: str = (
             f"Processed {ft_len(data)} numeric values, "
             f"sum={ft_sum(data)}, avg={ft_sum(data)/ft_len(data):.1f}"
         )
         return result
 
     def validate(self, data: Any | list[int]) -> bool:
+        """Ensure data is a list of integers"""
         try:
             if not isinstance(data, list):
                 raise ValueError("Data is not a list")
@@ -94,10 +104,13 @@ class NumericProcessor(DataProcessor):
 
 
 class TextProcessor(DataProcessor):
+    """Processes text strings"""
     def __init__(self) -> None:
+        """Initialize processor"""
         super().__init__()
 
     def process(self, data: str) -> str:
+        """Count characters and words"""
         result = (
             f"Processed text: {ft_len(data)} "
             f"characters, {ft_word_count(data)} words"
@@ -105,6 +118,7 @@ class TextProcessor(DataProcessor):
         return result
 
     def validate(self, data: str) -> bool:
+        """Ensure data is a string"""
         try:
             validate_data(data, str)
         except ValueError:
@@ -116,17 +130,21 @@ class TextProcessor(DataProcessor):
 
 
 class LogProcessor(DataProcessor):
+    """Processes log entries"""
     def __init__(self) -> None:
+        """Initialize processor"""
         super().__init__()
 
     def process(self, data: str) -> str:
+        """Analyze log level"""
         if 'ERROR' in data:
-            result = "ERROR level detected: Connection timeout"
+            result: str = "ERROR level detected: Connection timeout"
         else:
-            result = "INFO level detected: System ready"
+            result: str = "INFO level detected: System ready"
         return result
 
     def validate(self, data: str) -> bool:
+        """Ensure data is a string"""
         try:
             validate_data(data, str)
         except ValueError:
@@ -137,6 +155,7 @@ class LogProcessor(DataProcessor):
         return True
 
     def format_output(self, result: str) -> str:
+        """Format log output based on level"""
         if "ERROR" in result:
             return f"[ALERT] {result}"
         else:
@@ -144,8 +163,8 @@ class LogProcessor(DataProcessor):
 
 
 def test_proc_library() -> None:
-
-    processor_1 = NumericProcessor()
+    """Test individual processors"""
+    processor_1: NumericProcessor = NumericProcessor()
     data: List[int] = [1, 2, 3, 4, 5]
     print()
     print("Initializing Numeric Processor...")
@@ -155,7 +174,7 @@ def test_proc_library() -> None:
         result = processor_1.process(data)
         print(processor_1.format_output(result))
 
-    processor_2 = TextProcessor()
+    processor_2: TextProcessor = TextProcessor()
     text: str = "Hello Nexus World"
     print()
     print("Initializing Text Processor...")
@@ -165,7 +184,7 @@ def test_proc_library() -> None:
         result = processor_2.process(text)
         print(processor_2.format_output(result))
 
-    processor_3 = LogProcessor()
+    processor_3: LogProcessor = LogProcessor()
     error: str = "ERROR: Connection timeout"
     print()
     print("Initializing Log Processor...")
@@ -177,6 +196,7 @@ def test_proc_library() -> None:
 
 
 def polymorphic_processing() -> None:
+    """Demonstrate polymorphic behavior"""
     print('=== Polymorphic Processing Demo ===')
     print('Processing multiple data types through same interface...')
 
@@ -187,17 +207,18 @@ def polymorphic_processing() -> None:
         "Hello Nexus ",
         "INFO: System ready"
     ]
-    i = 0
+    i: int = 0
     for processor in proc_library:
         if processor.validate(data[i]):
             raw_result: str = processor.process(data[i])
-            formatted_result = processor.format_output(raw_result)
+            formatted_result: str = processor.format_output(raw_result)
             clean_result: str = formatted_result.replace("Output: ", "")
             print(f"Result {i + 1}: {clean_result}")
         i += 1
 
 
 def main() -> None:
+    """Main entry point"""
     print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===")
     test_proc_library()
     print()

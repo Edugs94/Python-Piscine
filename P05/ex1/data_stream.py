@@ -11,7 +11,7 @@ def ft_len(data: Any) -> int:
     """
     Recreation of len() as do not appear as an allowed function
     """
-    counter = 0
+    counter: int = 0
     for _ in data:
         counter += 1
     return counter
@@ -21,7 +21,7 @@ def ft_sum(data: List[Union[int, float]]) -> Union[int, float]:
     """
     Recreation of sum() as do not appear as an allowed function
     """
-    total = 0
+    total: Union[int, float] = 0
     for number in data:
         total += number
     return total
@@ -73,7 +73,7 @@ class SensorStream(DataStream):
 
     def process_batch(self, data_batch: List[Any]) -> str:
         """Processes batch"""
-        count = ft_len(data_batch)
+        count: int = ft_len(data_batch)
         return f"Sensor data: {count} readings processed"
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
@@ -97,6 +97,7 @@ class SensorStream(DataStream):
             return data_batch
 
     def avg_temp(self, data_batch: List[Any]) -> float:
+        """Calculates average temperature"""
         temps: List[float] = [
             x[1]
             for x in data_batch
@@ -135,7 +136,7 @@ class TransactionStream(DataStream):
 
     def process_batch(self, data_batch: List[Any]) -> str:
         """Processes batch"""
-        count = ft_len(data_batch)
+        count: int = ft_len(data_batch)
         return f"Transaction data: {count} operations processed"
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
@@ -147,7 +148,7 @@ class TransactionStream(DataStream):
     ) -> List[Any]:
         """Filters data based if a transaction is higher than 150"""
         if criteria == "high_priority":
-            filtered = [
+            filtered: List[Any] = [
                 x
                 for x in data_batch
                 if x[1] > 150
@@ -157,7 +158,7 @@ class TransactionStream(DataStream):
             return data_batch
 
     def net_flow(self, data_batch: List[Any]) -> int:
-
+        """Calculates net flow considering buy to be positive"""
         values: List[Union[int, float]] = [
             x[1] if x[0] == 'buy' else -x[1]
             for x in data_batch
@@ -188,7 +189,7 @@ class EventStream(DataStream):
 
     def process_batch(self, data_batch: List[Any]) -> str:
         """Processes batch and counts errors"""
-        count = ft_len(data_batch)
+        count: int = ft_len(data_batch)
 
         return f"Event analysis: {count} events processed"
 
@@ -201,7 +202,7 @@ class EventStream(DataStream):
     ) -> List[Any]:
         """Filters data based on criteria."""
         if criteria == "high_priority":
-            filtered = [
+            filtered: List[Any] = [
                 x for x in data_batch
                 if x == 'error'
             ]
@@ -225,11 +226,11 @@ class StreamProcessor:
         """
         print("Batch 1 Results:")
         for stream in self.streams:
-            stats = stream.get_stats()
-            stream_id = str(stats['stream_id'])
-            data = data_map.get(stream_id)
+            stats: Dict[str, Union[str, int, float]] = stream.get_stats()
+            stream_id: str = str(stats['stream_id'])
+            data: List[Any] = data_map.get(stream_id)  # type: ignore
             if data:
-                result = stream.process_batch(data)
+                result: str = stream.process_batch(data)
                 print(f"- {result}")
 
     def report_filtered_results(self, data_map: Dict[str, List[Any]],
@@ -238,16 +239,16 @@ class StreamProcessor:
         print()
         print("Stream filtering active: High-priority data only")
 
-        report_parts: List[Any] = []
+        report_parts: List[str] = []
 
         for stream in self.streams:
-            stats = stream.get_stats()
-            stream_id = str(stats['stream_id'])
-            data = data_map.get(stream_id)
+            stats: Dict[str, Union[str, int, float]] = stream.get_stats()
+            stream_id: str = str(stats['stream_id'])
+            data: List[Any] = data_map.get(stream_id)  # type: ignore
 
             if data:
-                filtered_data = stream.filter_data(data, criteria)
-                count = len(filtered_data)
+                filtered_data: List[Any] = stream.filter_data(data, criteria)
+                count: int = len(filtered_data)
 
                 if count > 0:
                     if isinstance(stream, SensorStream):
@@ -263,8 +264,9 @@ class StreamProcessor:
 
 
 def separate_streams():
+    """Demonstrates separate stream processing"""
     print()
-    stream_sensor = SensorStream("SENSOR_001")
+    stream_sensor: SensorStream = SensorStream("SENSOR_001")
     sensor_data: List[tuple[str, float]] = [
         ("temp", 22.5),
         ("humidity", 65),
@@ -276,10 +278,10 @@ def separate_streams():
         print("Error while reading Sensor Stream Data... "
               "Shutting down the system")
         return
-    stats = stream_sensor.get_stats()
+    stats: Dict[str, Union[str, int, float]] = stream_sensor.get_stats()
     print(f"Stream ID: {stats['stream_id']}, Type: {stats['type']}")
     print("Processing sensor batch: [", end="")
-    i = 0
+    i: int = 0
     for key, value in sensor_data:
         if i != ft_len(sensor_data) - 1:
             print(f"{key}:{value}, ", end="")
@@ -292,7 +294,7 @@ def separate_streams():
     )
 
     print()
-    stream_finance = TransactionStream("TRANS_001")
+    stream_finance: TransactionStream = TransactionStream("TRANS_001")
     finance_data: List[tuple[str, int]] = [
         ("buy", 100),
         ("sell", 150),
@@ -323,7 +325,7 @@ def separate_streams():
         print(f"net flow: -{net_flow}")
 
     print()
-    stream_event = EventStream("EVENT_001")
+    stream_event: EventStream = EventStream("EVENT_001")
     event_data: List[str] = [
         "login",
         "error",
@@ -344,7 +346,7 @@ def separate_streams():
         else:
             print(f"{item}]")
         i += 1
-    error_count = 0
+    error_count: int = 0
     for item in event_data:
         if item == 'error':
             error_count += 1
@@ -353,11 +355,12 @@ def separate_streams():
 
 
 def polymorphic_stream():
+    """Demonstrates polymorphic processing"""
     print("Processing mixed stream types through unified interface...")
-    processor = StreamProcessor()
-    sensor = SensorStream("SENSOR_001")
-    trans = TransactionStream("TRANS_001")
-    event = EventStream("EVENT_001")
+    processor: StreamProcessor = StreamProcessor()
+    sensor: SensorStream = SensorStream("SENSOR_001")
+    trans: TransactionStream = TransactionStream("TRANS_001")
+    event: EventStream = EventStream("EVENT_001")
     processor.add_stream(sensor)
     processor.add_stream(trans)
     processor.add_stream(event)
@@ -387,6 +390,7 @@ def polymorphic_stream():
 
 
 def main():
+    """Main entry point"""
     print("=== CODE NEXUS - POLYMORPHIC STREAM SYSTEM ===")
     separate_streams()
     print()
