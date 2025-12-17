@@ -3,17 +3,17 @@ Docstring for alchemy.elements
 '''
 
 
-def create_fire():
+def create_fire() -> str:
     return "Fire element created"
 
 
-def create_water():
+def create_water() -> str:
     return "Water element created"
 
 
-def create_earth():
+def create_earth() -> str:
     return "Earth element created"
 
 
-def create_air():
+def create_air() -> str:
     return "Air element created"
