@@ -28,7 +28,7 @@ def main() -> None:
     )
     print(
         "alchemy.transmutation.philosophers_stone():"
-        f" {alchemy.transmutation.elixir_of_life()}"
+        f" {alchemy.transmutation.philosophers_stone()}"
     )
 
     print()
