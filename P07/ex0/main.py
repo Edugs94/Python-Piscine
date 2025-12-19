@@ -16,7 +16,7 @@ def main():
     fire_dragon: CreatureCard = CreatureCard(
         "Fire Dragon", 5, "Legendary", 7, 5
     )
-    goblin_warrior = CreatureCard("Goblin Warrior", 2, "Common", 2, 3)
+    goblin_warrior = CreatureCard("Goblin Warrior", 2, "Common", 2, 2)
     print(" CreatureCard Info:")
     print(fire_dragon.get_card_info())
 

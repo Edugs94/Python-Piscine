@@ -11,6 +11,7 @@ class CreatureCard(Card):
     """
     Docstring for CreatureCard
     """
+    TYPE_ALIAS = "Creature"
 
     def __init__(
         self, name: str, cost: int, rarity: str, attack: int, health: int
@@ -37,7 +38,7 @@ class CreatureCard(Card):
         return self._health
 
     @attack.setter
-    def attack(self, new_attack: int):
+    def attack(self, new_attack: int) -> None:
         """
         Protects attack from being less or equal than 0
         """
@@ -48,9 +49,9 @@ class CreatureCard(Card):
         self._attack: int = new_attack
 
     @health.setter
-    def health(self, new_health: int):
+    def health(self, new_health: int) -> None:
         '''
-        Protects health from being less or equal than 0
+        Protects health from being lower than 0
         '''
         if not isinstance(new_health, int):  # type: ignore
             raise ValueError("Health must be an int value")
@@ -58,11 +59,11 @@ class CreatureCard(Card):
             raise ValueError("Health must be more than 0")
         self._health: int = new_health
 
-    def play(self, game_state: Dict[Any, Any]) -> Dict[Any, Any]:
+    def play(self, game_state: Dict[Any, Any]) -> Dict[str, Any]:
         """
         Docstring for play
         """
-        available_mana = game_state.get("available_mana", 0)
+        available_mana: int = game_state.get("available_mana", 0)
         if self.is_playable(available_mana):
             data: Dict[Any, Any] = {
                 "card_played": self.name,
