@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "ex1"
+version = "0.1.0"
+description = ""
+authors = ["Edu edu@example.com"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = "^2.3.3"
+requests = "^2.32.5"
+matplotlib = "^3.10.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
