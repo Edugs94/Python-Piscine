@@ -7,6 +7,7 @@ try:
     print("pandas: OK")
 except ImportError:
     print("pandas: Not installed")
+    exit()
 
 try:
     import requests
@@ -14,6 +15,7 @@ try:
     print("requests: OK")
 except ImportError:
     print("requests: Not installed")
+    exit()
 
 try:
     import matplotlib.pyplot as plt
@@ -21,9 +23,15 @@ try:
     print("matplotlib: OK")
 except ImportError:
     print("matplotlib: Not installed")
+    exit()
 
 
 def main():
+    try:
+        response = requests.get("https://www.python.org")
+        print(f"Connection established. Status Code: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Connection failed: {e}")
     if "pandas" in sys.modules:
         data: dict[str, Any] = {
             "Month": ["Jan", "Feb", "Mar", "Apr"],
