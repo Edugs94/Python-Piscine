@@ -1,3 +1,6 @@
+'''
+Docstring for ex0
+'''
 __author__ = "egalindo"
 __version__ = "1.0.0"
 __all__ = ["Card", "CreatureCard"]
