@@ -4,7 +4,13 @@ Docstring for ex0.space_station
 
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, Field, ValidationError
+
+try:
+    from pydantic import BaseModel, Field, ValidationError
+
+except ImportError:
+    print("Pydantic is not installed. Install it with: 'pip install pydantic'")
+    exit()
 
 
 class SpaceStation(BaseModel):
