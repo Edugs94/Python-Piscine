@@ -5,8 +5,13 @@ Docstring for ex1.alien_contact
 from enum import Enum
 from datetime import datetime
 from typing import Optional, Dict, Any
-from pydantic import BaseModel, Field, ValidationError, model_validator
 
+try:
+    from pydantic import BaseModel, Field, ValidationError, model_validator
+
+except ImportError:
+    print("Pydantic is not installed. Install it with: 'pip install pydantic'")
+    exit()
 
 class ContactType(str, Enum):
     """
@@ -58,6 +63,9 @@ class AlienContact(BaseModel):
 
 
 def main():
+    '''
+    Docstring for main
+    '''
     print("Alien Contact Log Validation")
     print("======================================")
 
