@@ -13,6 +13,7 @@ except ImportError:
     print("Pydantic is not installed. Install it with: 'pip install pydantic'")
     exit()
 
+
 class ContactType(str, Enum):
     """
     Docstring for ContactType
