@@ -32,7 +32,7 @@ except ImportError:
 def main():
     if libraries_missing is True:
         print("One or more libraries are missing. "
-              "Install them with pip or Poetry)")
+              "Install them with pip or Poetry")
         exit()
 
     try:
