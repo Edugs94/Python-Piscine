@@ -1,32 +1,40 @@
 import sys
 from typing import Any
 
+libraries_missing = False
+
 try:
     import pandas as pd
 
-    print("pandas: OK")
+    print(f"[OK] pandas ({pd.__version__}) - Data manipulation ready")
 except ImportError:
     print("pandas: Not installed")
-    exit()
+    libraries_missing = True
 
 try:
     import requests
 
-    print("requests: OK")
+    print(f"[OK] requests ({requests.__version__}) - Network access ready")
 except ImportError:
     print("requests: Not installed")
-    exit()
+    libraries_missing = True
 
 try:
+    import matplotlib
     import matplotlib.pyplot as plt
 
-    print("matplotlib: OK")
+    print(f"[OK] matplotlib ({matplotlib.__version__}) - Visualization ready")
 except ImportError:
     print("matplotlib: Not installed")
-    exit()
+    libraries_missing = True
 
 
 def main():
+    if libraries_missing is True:
+        print("One or more libraries are missing. "
+              "Install them with pip or Poetry)")
+        exit()
+
     try:
         response = requests.get("https://www.python.org")
         print(f"Connection established. Status Code: {response.status_code}")

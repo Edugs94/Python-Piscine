@@ -28,7 +28,7 @@ def main() -> None:
             print()
             try:
                 paths = site.getsitepackages()
-                print(f"Package installation path: {paths}")
+                print(f"Package installation path: {paths[0]}")
             except (AttributeError, IndexError):
                 print("Package installation path: (Standard path unavailable)")
         else:
