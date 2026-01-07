@@ -40,7 +40,7 @@ def spell_dispatcher() -> callable:
     @singledispatch
     def spell(arg) -> str:
         raise TypeError(
-            "Data type must be one of the following: int, str, list[int]"
+            "Data type must be one of the following: int, str, list"
         )
 
     @spell.register(int)

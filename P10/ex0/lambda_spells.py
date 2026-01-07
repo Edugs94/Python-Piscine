@@ -1,6 +1,7 @@
 def artifact_sorter(artifacts: list[dict]) -> list[dict]:
 
-    data: list[dict] = sorted(artifacts, key=lambda n: n["power"])
+    data: list[dict] = sorted(artifacts, key=lambda n: n["power"],
+                              reverse=True)
     return data
 
 
