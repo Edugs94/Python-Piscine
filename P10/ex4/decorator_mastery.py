@@ -97,7 +97,7 @@ def main():
     print(thunder(10))
 
     print("=" * 40)
-    print("Testing MagueGuild...")
+    print("Testing MageGuild...")
     print("Testing if the following magues can join the guild:")
     print(f"Harry: {MageGuild.validate_mage_name('Harry')}")
     print(f"C-3PO: {MageGuild.validate_mage_name('C-3PO')}")
